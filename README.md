@@ -3,6 +3,9 @@
 ## Overview
 Update 5/1/2020: Base the previous project, this is the optimized algorithm for lane_finding project. This method make the algorithm robust and stable which can handle more cases. 
 
+### Advanced lane finding example 
+![](https://github.com/garychian/SDE-Project_1-Finding_Lane_on_the_road/blob/master/advanced%20lane%20finding.gif)
+
 ### Pipeline
 * Calibration Camera
 * Threshold Binary
@@ -11,9 +14,75 @@ Update 5/1/2020: Base the previous project, this is the optimized algorithm for 
 * Detect lane pixels using Histogram 
 * Measuring Curvature
 
-### Model details
+#### Calibration Camera
+```python
+'''
+ use `findChessBoardCorners` function in opencv to find (x,y) in all corner
+    input: 
+    folder: calibration image directory
+    nx: No. of corners in x axis
+    ny: No. of corners in y axis
+    
+    output:
+    ret: calibrate RMS error
+    mtx: martrix of camera
+    dist:  distortion cofficient   
+    rvecs: spin vector
+    tvecd: translation vector
+'''
 
+ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
+```
+
+#### Threshold Binary
+```python 
+'''
+    use Sobel operator to calcuate gradient in x direction 
+    img: Gray image
+    direction: x or y axis 
+    thresh: apply threshold on pixel intensity of gradient image
+    output is binary image
+    '''
+    # sobel x will emphasize line in verticle direction 
+
+```
+
+#### Color Transform 
+Take undistored RGB image to HLS, keep S channel. Then combine output (gradx) from Binary and this S channel.  
+
+#### Perspective Transform  
+Transform image to birdeye view, using defined source image points and destination points, it will transform the image as if the road was viewed from above. It will return the birds eye image and transform matrix. 
+```python
+# Put the image through the pipeline to get the binary image
+    binary_img = pipeline(img)
+    
+    # Undistort
+    undist = cv2.undistort(binary_img, mtx, dist, None, mtx)
+
+    # Grab the image shape
+    img_size = (undist.shape[1], undist.shape[0])
+
+    # Source points - defined area of lane line edges
+    src = np.float32([[690,450],[1110,img_size[1]],[175,img_size[1]],[595,450]])
+
+    # 4 destination points to transfer
+    offset = 300 # offset for dst points
+    dst = np.float32([[img_size[0]-offset, 0],[img_size[0]-offset, img_size[1]],
+                      [offset, img_size[1]],[offset, 0]])
+    
+    # Use cv2.getPerspectiveTransform() to get M, the transform matrix
+    M = cv2.getPerspectiveTransform(src, dst)
+    
+    # Use cv2.warpPerspective() to warp the image to a top-down view
+    top_down = cv2.warpPerspective(undist, M, img_size)
+
+    return top_down, M
+
+```
+#### Sliding box and Measuring Curvature
+![](https://github.com/garychian/SDE-Project_1-Finding_Lane_on_the_road/blob/master/images/Sliding%20Window%20.png)
+![](https://github.com/garychian/SDE-Project_1-Finding_Lane_on_the_road/blob/master/images/polyfit%20cofficient.png)
 
 update: 4/2/2020
 The inputs are video stream and outputs are shown in gif. 
