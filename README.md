@@ -16,20 +16,20 @@ Update 5/1/2020: Base the previous project, this is the optimized algorithm for 
 
 #### Calibration Camera
 ```python
-'''
- use `findChessBoardCorners` function in opencv to find (x,y) in all corner
-    input: 
-    folder: calibration image directory
-    nx: No. of corners in x axis
-    ny: No. of corners in y axis
+
+    # use `findChessBoardCorners` function in opencv to find (x,y) in all corner
+    # input: 
+    # folder: calibration image directory
+    # nx: No. of corners in x axis
+    # ny: No. of corners in y axis
     
-    output:
-    ret: calibrate RMS error
-    mtx: martrix of camera
-    dist:  distortion cofficient   
-    rvecs: spin vector
-    tvecd: translation vector
-'''
+    # output:
+    # ret: calibrate RMS error
+    # mtx: martrix of camera
+    # dist:  distortion cofficient   
+    # rvecs: spin vector
+    # tvecd: translation vector
+
 
 ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.shape[::-1],None,None)
 
@@ -37,13 +37,12 @@ ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, gray.sh
 
 #### Threshold Binary
 ```python 
-'''
-    use Sobel operator to calcuate gradient in x direction 
-    img: Gray image
-    direction: x or y axis 
-    thresh: apply threshold on pixel intensity of gradient image
-    output is binary image
-    '''
+
+    # use Sobel operator to calcuate gradient in x direction 
+    # img: Gray image
+    # direction: x or y axis 
+    # thresh: apply threshold on pixel intensity of gradient image
+    # output is binary image
     # sobel x will emphasize line in verticle direction 
 
 ```
