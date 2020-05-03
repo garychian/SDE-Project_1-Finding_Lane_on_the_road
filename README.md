@@ -1,8 +1,22 @@
 # SDE-Project_1-Finding_Lane_on_the_road
-This project is develop a lane line detector using python and OpenCV. 
 
+## Overview
+Update 5/1/2020: Base the previous project, this is the optimized algorithm for lane_finding project. This method make the algorithm robust and stable which can handle more cases. 
+
+### Pipeline
+* Calibration Camera
+* Threshold Binary
+* Color Transform 
+* Perspective Transform
+* Detect lane pixels using Histogram 
+* Measuring Curvature
+
+### Model details
+
+
+
+update: 4/2/2020
 The inputs are video stream and outputs are shown in gif. 
-
 ### White Lane
 ![](https://github.com/garychian/SDE-Project_1-Finding_Lane_on_the_road/blob/master/White.gif)
 
